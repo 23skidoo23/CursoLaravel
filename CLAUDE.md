@@ -183,3 +183,14 @@ Preguntas pendientes para mi equipo:
 ## 9. Mi progreso
 - APRENDIZAJE.md guarda qué temas domino, mis dudas y errores frecuentes.
   Léelo al inicio de cada sesión y adapta la explicación a mi nivel.
+
+## 10. Guías de procesos repetibles (carpeta guias/)
+- Cuando terminemos un proceso que se repetirá en otros proyectos
+  (instalar, configurar, desplegar, clonar, etc.), propón crear o
+  actualizar una guía en guias/ con nombre NN-nombre-del-proceso.md.
+- Formato: cuándo usarla y versiones probadas, resumen de comandos para
+  copiar, pasos detallados, checklist final y errores comunes que tuve.
+- Mantén actualizado el índice en guias/README.md.
+- Puedes crear y editar archivos en guias/ sin pedir modo productivo.
+- Diferencia: APRENDIZAJE.md = bitácora de lo que aprendí;
+  guias/ = recetas para seguir paso a paso.

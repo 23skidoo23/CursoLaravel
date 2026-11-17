@@ -9,8 +9,9 @@
 
 - **Semana:** 1 — Entorno, PHP esencial y el flujo de Laravel
 - **Tema en curso:** [Base] Instalar herramientas y crear el proyecto
-- **Paso del ciclo:** 3 — Construir (falta ejecutar `composer create-project`)
-- **Siguiente:** crear `mini-pedidos`, iniciar Git, ver Laravel en el navegador
+- **Paso del ciclo:** 6 — Comprobar y guardar (commit `1d6dab3` hecho; falta `/examen`)
+- **Siguiente:** `/examen` → tema 2: configurar `.env` con MySQL de XAMPP
+- **Guías:** ver carpeta `guias/` (procesos para repetir en otros proyectos)
 
 ---
 
@@ -158,3 +159,6 @@ _(Agregar aquí lo que no me quede claro.)_
 | Error | Causa | Solución |
 |---|---|---|
 | `php: command not found` | `C:\xampp\php` no estaba en el PATH | Agregarlo al Path de usuario y reabrir la terminal |
+| `Could not find package laraverl/laravel` | Error de dedo; Composer no adivina paquetes | Copiar y pegar comandos; comparar con el nombre entre corchetes/del mensaje |
+| `Failed opening required vendor/autoload.php` | Usé artisan antes de que Composer terminara | Esperar el prompt `$`; en proyectos clonados: `composer install` |
+| Junté las razones de `vendor/` y `.env` | Confusión de concepto | `vendor` = pesado y regenerable · `.env` = secretos |
