@@ -143,7 +143,8 @@ PHPUnit/Pest, o React si el equipo lo usa.
 ## 6. Prompts que usaré
 - Empezar el día: "Lee APRENDIZAJE.md y dime en qué tema voy y qué
   sigue hoy." -> revisa la sección 5 y propón la sesión del día.
-- Tema nuevo: /aprender <tema>
+- Continuar donde me quedé: /siguiente (o /siguiente <tema> para elegirlo)
+- Ver dónde voy (útil después de /clear): /progreso
 - Me atoro: "Dame una pista, no la solución. Esto intenté: ..."
 - Error: "Tengo este error: ... Enséñame a leerlo y dónde buscar."
 - Entender código: "Explícame línea por línea y qué pasa si quito X."

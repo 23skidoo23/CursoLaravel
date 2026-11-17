@@ -38,7 +38,8 @@ _(Todavía ninguno. Se agregan aquí al aprobar el /examen del tema.)_
 
 | Comando | Cuándo | Qué hace |
 |---|---|---|
-| `/aprender <tema>` | Al empezar un tema (paso 1) | Analogía, ejemplo mínimo, archivos a tocar, 2 errores típicos |
+| `/progreso` | Al abrir sesión o tras `/clear` | Dice semana, tema, paso del ciclo y qué comando sigue. No toca archivos |
+| `/siguiente` | Para avanzar (opcional: `/siguiente <tema>`) | Continúa el paso pendiente o empieza el siguiente tema del plan |
 | `/revisar` | Antes del commit (paso 5) | Revisa mi `git diff` como senior. **Necesita Git.** |
 | `/examen` | Al cerrar el tema (paso 6) | 3 preguntas, calificación y resumen aquí |
 
@@ -99,7 +100,7 @@ _(Todavía ninguno. Se agregan aquí al aprobar el /examen del tema.)_
 CursoLaravel/
 ├── CLAUDE.md              ← reglas para Claude
 ├── APRENDIZAJE.md         ← esta bitácora
-├── .claude/commands/      ← /aprender, /revisar, /examen
+├── .claude/commands/      ← /progreso, /siguiente, /revisar, /examen
 └── mini-pedidos/          ← lo crea Composer
     ├── app/               ← Controladores y Modelos (pasos 3 y 4 del flujo)
     ├── routes/web.php     ← las rutas (paso 2 del flujo)
