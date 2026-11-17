@@ -9,9 +9,10 @@
 
 - **Semana:** 1 — Entorno, PHP esencial y el flujo de Laravel
 - **Tema en curso:** [Base] Instalar herramientas y crear el proyecto
-- **Paso del ciclo:** 6 — Comprobar y guardar (commits `1d6dab3` y `13e811d`, subidos a GitHub privado; falta `/examen`)
+- **Paso del ciclo:** 6 — Comprobar y guardar. `/examen` hecho el 2026-11-17: **6/10** (ver abajo)
 - **Adelantado:** parte del tema [Profundizar] Git diario → remote, push (ver guía 03)
-- **Siguiente:** `/examen` → tema 2: configurar `.env` con MySQL de XAMPP
+- **Siguiente:** repaso de 10 min (los 3 puntos débiles del examen) → tema 2: configurar `.env` con MySQL de XAMPP
+  (el tema 2 refuerza justo lo que falló: `.env`, `APP_KEY`, `key:generate`)
 - **Guías:** ver carpeta `guias/` (procesos para repetir en otros proyectos)
 
 ---
@@ -154,6 +155,29 @@ Navegador pide /pedidos
 - **Página de error de Laravel:** aparece porque `.env` tiene `APP_DEBUG=true`.
 - **Puertos:** 8000 = `artisan serve` · 80 = Apache · 3306 = MySQL.
 
+#### 10. 📝 Examen del tema 1 — 2026-11-17 · Calificación: **6/10**
+
+| # | Tipo | Pregunta | Nota | Qué faltó |
+|---|---|---|---|---|
+| 1 | Concepto | Compañero clona el repo sin `vendor/` ni `.env` | 6/10 | Razones bien. Faltaron los pasos: `composer install`, copiar `.env.example` → `.env`, `php artisan key:generate` |
+| 2 | Leer código | `.gitignore` y `routes/web.php` | 6/10 | `/public/build` = CSS/JS compilado por Vite. `'/'` = la **URL** raíz. `view('welcome')` → `resources/views/welcome.blade.php` |
+| 3 | Error | `MissingAppKeyException` | 6/10 | Comando bien. Pero el archivo a revisar es **`.env`, línea `APP_KEY=`** (vacía), no la clase del error |
+
+**Lo que aprendí del examen:**
+- **Regla general de `.gitignore`:** lo que se puede **regenerar con un comando**
+  (`vendor/`, `node_modules/`, `public/build/`) o que es **secreto** (`.env`) no se sube.
+- **Receta → despensa:** `composer.json` → `vendor/` (`composer install`) ·
+  `package.json` → `node_modules/` (`npm install`).
+- **Leer un error de Laravel:** el nombre de la clase (`Illuminate\...\MissingAppKeyException`)
+  dice **qué tipo** de error es. Ese archivo vive en `vendor/` y **nunca se edita**.
+  La causa casi siempre está en **mi** código o en **mi** `.env`.
+- `php artisan key:generate` **escribe** una clave aleatoria en `APP_KEY=` dentro de `.env`.
+
+**Repasar antes del tema 2:**
+1. Los 3 pasos después de clonar un proyecto Laravel (decirlos de memoria).
+2. Qué es `'/'` en `Route::get('/', ...)` y dónde busca Laravel una vista.
+3. Abrir `mini-pedidos/.env` y ubicar `APP_KEY`, `APP_DEBUG` y `DB_*`.
+
 ---
 
 ## 🧠 Preguntas de repaso (para practicar antes del /examen)
@@ -181,3 +205,5 @@ _(Agregar aquí lo que no me quede claro.)_
 | `Could not find package laraverl/laravel` | Error de dedo; Composer no adivina paquetes | Copiar y pegar comandos; comparar con el nombre entre corchetes/del mensaje |
 | `Failed opening required vendor/autoload.php` | Usé artisan antes de que Composer terminara | Esperar el prompt `$`; en proyectos clonados: `composer install` |
 | Junté las razones de `vendor/` y `.env` | Confusión de concepto | `vendor` = pesado y regenerable · `.env` = secretos |
+| `No application encryption key has been specified` | `APP_KEY=` vacío en `.env` (proyecto clonado) | `php artisan key:generate` |
+| Buscar la causa en la clase del error (`Illuminate\...`) | Ese código es de Laravel, vive en `vendor/` | Leer el **mensaje** y revisar **mi** `.env` o **mi** código |
