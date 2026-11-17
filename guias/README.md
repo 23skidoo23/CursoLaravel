@@ -10,7 +10,7 @@ guías son para **consultar y seguir**, como un manual.
 |---|---|---|
 | 01 | [Iniciar un proyecto Laravel desde cero](01-iniciar-proyecto-laravel.md) | ✅ Probada |
 | 02 | Configurar `.env` con el MySQL de XAMPP | ⏳ Pendiente (Semana 1) |
-| 03 | Subir un repositorio a GitHub | ⏳ Pendiente (Semana 1) |
+| 03 | [Subir un repositorio local a GitHub](03-subir-repositorio-github.md) | ✅ Probada |
 | 04 | Clonar e instalar un proyecto Laravel existente | ⏳ Pendiente (Semana 5) |
 
 ## Formato de cada guía

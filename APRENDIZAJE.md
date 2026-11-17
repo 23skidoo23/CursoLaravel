@@ -9,7 +9,8 @@
 
 - **Semana:** 1 — Entorno, PHP esencial y el flujo de Laravel
 - **Tema en curso:** [Base] Instalar herramientas y crear el proyecto
-- **Paso del ciclo:** 6 — Comprobar y guardar (commit `1d6dab3` hecho; falta `/examen`)
+- **Paso del ciclo:** 6 — Comprobar y guardar (commits `1d6dab3` y `13e811d`, subidos a GitHub privado; falta `/examen`)
+- **Adelantado:** parte del tema [Profundizar] Git diario → remote, push (ver guía 03)
 - **Siguiente:** `/examen` → tema 2: configurar `.env` con MySQL de XAMPP
 - **Guías:** ver carpeta `guias/` (procesos para repetir en otros proyectos)
 
@@ -134,6 +135,24 @@ Navegador pide /pedidos
    → Vista Blade               (resources/views) → genera HTML
    → Navegador recibe la página
 ```
+
+#### 9. Git: primeros pasos [Profundizar]
+
+- **Analogía:** Git = **puntos de guardado** de un videojuego; GitHub = las
+  partidas **en la nube**.
+- `git add` → mete cambios a la **staging area** (la caja). Permite elegir
+  **qué** guardar.
+- `git commit -m "..."` → cierra la caja con etiqueta y la guarda en el historial.
+- `git status` resume carpetas nuevas: ver `mini-pedidos/` **no** significa
+  que `vendor/` vaya incluido. Comprobar con `git check-ignore -v <ruta>`.
+- `.gitignore` es un **archivo**, y filtra en el `add`, no en el `push`.
+- ⚠️ Si un archivo ya entró en un commit, agregarlo después al `.gitignore`
+  **no** lo borra del historial.
+- `git push -u origin main` → sube los commits; `origin` = apodo del remoto.
+- `warning: LF will be replaced by CRLF` → saltos de línea Linux/Windows;
+  solo es un aviso.
+- **Página de error de Laravel:** aparece porque `.env` tiene `APP_DEBUG=true`.
+- **Puertos:** 8000 = `artisan serve` · 80 = Apache · 3306 = MySQL.
 
 ---
 
