@@ -21,16 +21,31 @@ git --version
 cd /c/xampp/htdocs/<carpeta>
 composer create-project laravel/laravel <nombre-proyecto>
 
-# 3. Probarlo
+# 3. Probarlo (desde aquí, TODO se corre dentro de la carpeta del proyecto)
 cd <nombre-proyecto>
 php artisan serve          # abrir http://127.0.0.1:8000 · detener con Ctrl+C
 
-# 4. Guardarlo en Git (en otra terminal)
+# 4. Guardarlo en Git (en otra terminal, también dentro de <nombre-proyecto>)
+cd /c/xampp/htdocs/<carpeta>/<nombre-proyecto>
 git init
 git status                 # revisar que NO aparezcan vendor/ ni .env
 git add .
 git commit -m "Crear proyecto <nombre> con Laravel <versión>"
 ```
+
+---
+
+## ⚠️ Antes de empezar: ¿dónde va el repositorio?
+
+| Caso | Raíz del repo (`git init`) | Dónde corro `php artisan` |
+|---|---|---|
+| **A. Proyecto normal** (el estándar; así son los de la empresa) | **Dentro** de `<nombre-proyecto>/` | En la raíz del repo |
+| **B. Repo de capacitación** (mi `CursoLaravel`: bitácora + guías + proyecto) | La carpeta de **afuera** | Siempre después de `cd <nombre-proyecto>` |
+
+- **Usa el caso A** salvo que quieras guardar notas junto al proyecto, como en `CursoLaravel`.
+- En los dos casos: `artisan`, `composer.json` y `.env` viven en la carpeta del
+  proyecto. **Antes de `php artisan`, mira la ruta del prompt.**
+- Los pasos de abajo siguen el **caso A**.
 
 ---
 
@@ -109,14 +124,18 @@ php artisan serve
 
 ## Paso 3 — Guardar en Git
 
+Dentro de la carpeta del proyecto (caso A):
+
 ```bash
+cd /c/xampp/htdocs/<carpeta>/<nombre-proyecto>
 git init
 git status
 ```
 
 Antes del `add`, **comprobar que Git ignora lo que no debe subir**:
 ```bash
-git check-ignore -v <nombre-proyecto>/vendor <nombre-proyecto>/.env
+git check-ignore -v vendor .env
+# caso B (repo de afuera): git check-ignore -v <nombre-proyecto>/vendor <nombre-proyecto>/.env
 ```
 Debe responder con la línea del `.gitignore` que los ignora. Laravel ya trae
 esas reglas.
@@ -148,6 +167,7 @@ git status                 # debe decir "working tree clean"
 | `php: command not found` | PHP no está en el PATH | Agregar `C:\xampp\php` al Path y reabrir la terminal |
 | `Command "create-proyect" is not defined` | Comando mal escrito | Composer sugiere el correcto; responder `y` o corregirlo |
 | `Could not find package laraverl/laravel` | Nombre de paquete mal escrito; Composer **no** lo adivina | Escribir exactamente `laravel/laravel` |
+| `Could not open input file: artisan` | Estoy en la carpeta equivocada (el prompt no termina en `<nombre-proyecto>`) | `cd <nombre-proyecto>` y repetir |
 | `Failed opening required '.../vendor/autoload.php'` | `vendor/` incompleto o no existe | Esperar a que termine Composer, o ejecutar `composer install` |
 | `View [x] not found` | La vista no existe en `resources/views/` | Revisar el nombre en `view('...')` sin `.blade.php` |
 | `warning: LF will be replaced by CRLF` | Aviso de saltos de línea Linux/Windows | Es solo un aviso; se puede continuar |

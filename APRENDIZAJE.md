@@ -8,11 +8,14 @@
 ## 📍 Estado actual
 
 - **Semana:** 1 — Entorno, PHP esencial y el flujo de Laravel
-- **Tema en curso:** [Base] Instalar herramientas y crear el proyecto
-- **Paso del ciclo:** 6 — Comprobar y guardar. `/examen` hecho el 2026-11-17: **6/10** (ver abajo)
+- **Tema en curso:** [Base] Tema 2 — Configurar `.env` con el MySQL de XAMPP y crear la base `mini_pedidos`
+- **Paso del ciclo:** 6 — Comprobar y guardar. `/examen` hecho el 2026-11-19: **7/10** (ver Sesión 2). Falta: guía 02 + commit
+- **Repaso del examen 2:** ✅ hecho el 2026-11-19 (`env()` con respaldo ya claro; `base.tabla`; sesiones en MySQL)
+- **Tema 1:** examen 6/10 + ✅ repaso hecho el 2026-11-18 (3/3; reforzar "punto = carpeta" en `view()`)
 - **Adelantado:** parte del tema [Profundizar] Git diario → remote, push (ver guía 03)
-- **Siguiente:** repaso de 10 min (los 3 puntos débiles del examen) → tema 2: configurar `.env` con MySQL de XAMPP
-  (el tema 2 refuerza justo lo que falló: `.env`, `APP_KEY`, `key:generate`)
+- **Casillas:** temas 1 y 2 **sin `[x]` a propósito** → al retomarlos, re-explicar más despacio y fácil (ver "Dudas abiertas")
+- **Siguiente:** ✅ guía 02 creada → **commit** (bitácora + guías + `.env.example`) → tema 3 [Base]: PHP esencial
+  (el tema 3 refuerza funciones con valor por defecto, como `env('X', 'respaldo')`)
 - **Guías:** ver carpeta `guias/` (procesos para repetir en otros proyectos)
 
 ---
@@ -179,6 +182,85 @@ Navegador pide /pedidos
 2. Qué es `'/'` en `Route::get('/', ...)` y dónde busca Laravel una vista.
 3. Abrir `mini-pedidos/.env` y ubicar `APP_KEY`, `APP_DEBUG` y `DB_*`.
 
+> ✅ Repaso hecho el 2026-11-18 (3/3). Lo que más costó: **en `view()`, punto = `/`**
+> → `view('productos.lista')` = `resources/views/productos/lista.blade.php`.
+
+### Sesión 2 — 2026-11-18 / 2026-11-19 · Configurar `.env` con MySQL de XAMPP [Base]
+
+#### 1. SQLite vs MySQL
+
+- `DB_CONNECTION` = el **motor** (tipo de base de datos). Se escribe en minúsculas: `mysql`.
+- **SQLite** = un **cuaderno**: un archivo (`database/database.sqlite`). Es el default de Laravel 12.
+- **MySQL** = una **bodega con guardia**: servidor aparte (XAMPP, puerto 3306) que pide
+  dirección (`DB_HOST`), puerta (`DB_PORT`), almacén (`DB_DATABASE`) y gafete (`DB_USERNAME` / `DB_PASSWORD`).
+- En `.env`, `#` = **comentario**: Laravel ignora la línea.
+
+#### 2. Quién crea qué
+
+| Qué | Quién | Cuándo |
+|---|---|---|
+| La **base** `mini_pedidos` (la bodega) | **Yo**, en phpMyAdmin (`utf8mb4_unicode_ci`) | Antes de `migrate` |
+| Las **tablas** (los estantes) | `php artisan migrate` | Después |
+
+- Las 3 migraciones de fábrica crean **9 tablas**: `users`, `password_reset_tokens`, `sessions`,
+  `cache`, `cache_locks`, `jobs`, `job_batches`, `failed_jobs` + `migrations`.
+- La tabla **`migrations`** guarda el **nombre de cada migración ya corrida** y su **`batch`** (lote).
+  Por eso correr `migrate` otra vez dice *"Nothing to migrate"*. `migrate:rollback` deshace el último lote.
+- `php artisan migrate:status` → lista de migraciones con `Ran` (solo lee, sirve para probar la conexión).
+
+#### 3. `env()` y `config/` [¡pregunta de examen!]
+
+```php
+'database' => env('DB_DATABASE', 'laravel'),
+//               ① busca en .env   ② valor de respaldo SI NO EXISTE
+```
+
+- `config/database.php` = **cómo** conectarse (código, va a Git, igual para todos).
+- `.env` = **con qué valores** (secretos, no va a Git, distinto en cada PC).
+- `php artisan config:show app.name` → ver qué valor está usando Laravel **de verdad**.
+
+#### 4. Leer un error de base de datos
+
+```
+Illuminate\Database\QueryException        ← tipo (ignorar)
+SQLSTATE[HY000] [2002] ...                ← ⭐ código + mensaje = la causa
+(Connection: mysql, Host:..., Database:...) ← ⭐ valores que Laravel LEYÓ de mi .env
+at vendor\...\Connection.php:838          ← vendor = no se toca
+```
+
+| Código | Significa | Reviso |
+|---|---|---|
+| `2002` | No hay servidor: MySQL apagado | Panel de XAMPP |
+| `1049` | Unknown database: la base no existe o el nombre está mal | `DB_DATABASE` vs la lista de phpMyAdmin (la fuente de verdad) |
+| `1146` | Table doesn't exist: la base existe pero sin tablas | Correr `php artisan migrate` |
+
+- En un mensaje, `mini_pedidos.sessions` = **base.tabla** (el punto separa).
+
+#### 5. Detalles de `.env`
+
+- `APP_NAME="Mini Pedidos"` → con espacio va **entre comillas**.
+- `APP_URL=http://localhost:8000` → igual que `artisan serve`.
+- `SESSION_DRIVER=database` (y cache, queue) → sesiones en MySQL: con MySQL apagado o sin
+  `migrate`, **ni la página de inicio abre**.
+- **Laravel solo lee `.env`.** `.env.example` es la plantilla para el equipo: si cambio la
+  *forma* de la configuración, la actualizo también, **sin secretos**.
+- `.gitignore` tiene `.env` (línea 3), que **no** atrapa a `.env.example` (nombre distinto).
+- Estructura: `CursoLaravel` es repo de capacitación (caso B). En proyectos normales el repo
+  **es** la carpeta del proyecto (caso A). Antes de `php artisan`, **mirar la ruta del prompt**.
+
+#### 6. 📝 Examen del tema 2 — 2026-11-19 · Calificación: **7/10**
+
+| # | Tipo | Pregunta | Nota | Qué faltó |
+|---|---|---|---|---|
+| 1 | Concepto | ¿`migrate` crea la base? ¿Duplica tablas? | 8/10 | Bien. Faltó decir que `migrations` guarda **nombre + batch** de lo ya corrido |
+| 2 | Leer código | `env('DB_DATABASE', 'laravel')` | 5/10 | Lo entendí al revés: `'laravel'` es el **respaldo** si falta la variable, no lo que siempre usa |
+| 3 | Error | `1146 Table 'mini_pedidos.sessions' doesn't exist` | 7/10 | Causa y comando bien. `mini_pedidos.sessions` = base.tabla. Busca `sessions` por `SESSION_DRIVER=database`, no por `config:show` |
+
+**Repasar antes del tema 3:**
+1. Explicar en voz alta `env('X', 'respaldo')` con un ejemplo propio.
+2. Leer `base.tabla` en un mensaje de error.
+3. Abrir `config/session.php` y encontrar la línea con `env('SESSION_DRIVER', ...)`.
+
 ---
 
 ## 🧠 Preguntas de repaso (para practicar antes del /examen)
@@ -194,7 +276,19 @@ Navegador pide /pedidos
 
 ## ❓ Dudas abiertas
 
-_(Agregar aquí lo que no me quede claro.)_
+> **Nota para Claude (2026-11-19):** las casillas de los temas 1 y 2 quedan **sin `[x]`**
+> a propósito. Cuando se retome cualquiera de estos puntos, **volver a explicarlo más
+> despacio, con más detalle y más fácil de digerir** (paso a paso, ejemplos concretos),
+> porque la primera vez no me quedó claro. Marcar `[x]` solo cuando yo lo pida.
+
+| Tema | Lo que no me quedó claro |
+|---|---|
+| 1 | Los 3 pasos después de clonar (olvidé copiar `.env.example` → `.env`) |
+| 1 | `view('carpeta.archivo')`: el punto = carpeta; la ruta empieza en `resources/views/` |
+| 2 | `env('X', 'respaldo')`: X es una **variable** del `.env`, el respaldo solo si falta |
+| 2 | Leer `base.tabla` en mensajes de error |
+| 2 | Por qué `SESSION_DRIVER=database` hace que cualquier página use MySQL |
+| 2 | `.env` vs `.env.example`: cuál lee Laravel y cuál se comparte |
 
 ---
 
@@ -208,3 +302,9 @@ _(Agregar aquí lo que no me quede claro.)_
 | Junté las razones de `vendor/` y `.env` | Confusión de concepto | `vendor` = pesado y regenerable · `.env` = secretos |
 | `No application encryption key has been specified` | `APP_KEY=` vacío en `.env` (proyecto clonado) | `php artisan key:generate` |
 | Buscar la causa en la clase del error (`Illuminate\...`) | Ese código es de Laravel, vive en `vendor/` | Leer el **mensaje** y revisar **mi** `.env` o **mi** código |
+| `Could not open input file: artisan` | Terminal en `CursoLaravel`, no en `mini-pedidos` | `cd mini-pedidos`; mirar la ruta del prompt |
+| `SQLSTATE[HY000] [2002] ...denegó... la conexión` | MySQL apagado en XAMPP | Start en MySQL |
+| `SQLSTATE[HY000] [1049] Unknown database` | Nombre en `DB_DATABASE` distinto al de phpMyAdmin | Copiar el nombre exacto de phpMyAdmin |
+| `1146 Table '...sessions' doesn't exist` | Base creada pero sin `migrate` | `php artisan migrate` |
+| Cambié `APP_NAME` solo en `.env.example` | Creí que Laravel lo leía | Laravel **solo lee `.env`**; cambiar los dos |
+| Errores de dedo (`pedidios`, `producto`) | Escribir de memoria | Copiar nombres exactos; comprobar con `config:show` |
